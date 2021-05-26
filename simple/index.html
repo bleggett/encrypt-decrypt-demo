@@ -1,47 +1,48 @@
 <!DOCTYPE html>
 <!--
-MIT License
+     MIT License
 
-Copyright (c) 2019 Virtru Corporation
+     Copyright (c) 2019 Virtru Corporation
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+     Permission is hereby granted, free of charge, to any person obtaining a copy
+     of this software and associated documentation files (the "Software"), to deal
+     in the Software without restriction, including without limitation the rights
+     to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+     copies of the Software, and to permit persons to whom the Software is
+     furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+     The above copyright notice and this permission notice shall be included in all
+     copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+     THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+     AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+     LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+     SOFTWARE.
 -->
+
+
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/portal.css">
-    <link href="https://sdk.virtru.com/js/latest/auth-widget/index.css" rel="stylesheet"/>
-    <title>Encrypt-Decrypt Demo: Virtru Developer Hub</title>
-    <script type="text/javascript" src="https://sdk.virtru.com/js/latest/virtru-sdk.min.js"></script>
-    <script type="text/javascript" src="https://sdk.virtru.com/js/latest/auth-widget/index.js"></script>
- </head>
-   <body>
-    <script type="text/javascript" src="js/util.js"></script>
-    <div id="virtru-auth-widget-mount"></div>
-    <script>
-        const redirectUrl = `${BASE_URL}dragdrop.html`;
-        setTimeout(() => Virtru.AuthWidget('virtru-auth-widget-mount', {
-            redirectUrl,
-            afterAuth: (email) => {
-                window.location = `${redirectUrl}?virtruAuthWidgetEmail=${email}`;
-            }
-      }), 1000);
-    </script>
-  </body>
+    <head>
+        <script type="text/javascript" src="http://127.0.0.1:8080/auth/js/keycloak.js"></script>
+        <script>
+         var keycloak = Keycloak(
+             {
+                 realm: "tdf",
+                 url: "http://127.0.0.1:8080/auth/",
+                 clientId: "browsertest"
+             }
+         );
+
+         keycloak.init({onLoad: "login-required"}).success(function(authenticated) {
+             console.log(`GOT KC INFO: ${JSON.stringify(keycloak)}`)
+             alert(authenticated ? 'authenticated' : 'not authenticated');
+         }).error(function() {
+             alert('failed to initialize');
+         });
+
+        </script>
+    </head>
 </html>
