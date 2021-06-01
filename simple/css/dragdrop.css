@@ -59,11 +59,16 @@ label {
 }
 
 .user_logged_in_area{
+  display: initial;
   height: 110px;
   width: 130px;
   left: 83%;
   position: relative;
   text-align: left;
+}
+
+.user_logged_in_org{
+  float: left;
 }
 
 .user_logged_in_title{
@@ -75,6 +80,8 @@ label {
   font-family: 'Raleway';
   color: #3F3F3F;
   font-weight: bold;
+  position: relative;
+  text-align: left;
 }
 
 /*
@@ -324,11 +331,10 @@ label {
   background: #d6d7d8;
   padding: 5px 5px;
   border-radius: 5px;
-  display: inline-block;
   font-size: 15px;
   left: 30px;
   top: 20px;
-  position: relative;
+  float: right;
   transform: translate(-50%, -50%);
   font-weight: bold;
 }

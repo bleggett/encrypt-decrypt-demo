@@ -24,20 +24,33 @@ SOFTWARE.
 -->
 <html>
   <head>
+    <script type="text/javascript" src="dist/0.sdk.internalClient.web.js"></script>
+    <script type="text/javascript" src="dist/sdk.internalClient.web.js"></script>
+    <script type="text/javascript" src="http://127.0.0.1:8080/auth/js/keycloak.js"></script>
+    <script type="text/javascript" src="js/util.js"></script>
+    <script>
+    </script>
     <link href="https://fonts.googleapis.com/css?family=K2D" rel="stylesheet">
     <link rel="stylesheet" href="css/dragdrop.css">
     <link rel="stylesheet" href="css/portal.css">
-    <script type="text/javascript" src="https://sdk.virtru.com/js/latest/virtru-sdk.min.js"></script>
     <meta charset="UTF-8">
     <title>Encrypt-Decrypt Demo: Virtru Developer Hub</title>
  </head>
    <body>
     <div class="user_header">
         <div class="user_logged_in_area">
-            <div class="user_logged_in_title">
-                Account
+            <div class="user_logged_in_org">
+                <div class="user_logged_in_title">
+                    Organization
+                </div>
+                <div id="loggedInUserOrgLabel" class="user_logged_in_email"></div>
             </div>
-            <div id="loggedInUserLabel" class="user_logged_in_email"></div>
+            <div class="user_logged_in_account">
+                <div class="user_logged_in_title">
+                    Account
+                </div>
+                <div id="loggedInUserLabel" class="user_logged_in_email"></div>
+            </div>
             <div class="user_logout_button">
                 <a id="logoutButton">Logout</a>
             </div>
@@ -139,7 +152,6 @@ SOFTWARE.
     </div>
     <output id="list"></output>
     <div id="response"></div>
-    <script type="text/javascript" src="js/util.js"></script>
     <script type="text/javascript" src="js/build/demo-utils.js"></script>
     <script type="text/javascript" src="js/dragdrop.js"></script>
   </body>

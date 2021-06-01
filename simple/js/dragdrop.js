@@ -48,8 +48,9 @@ function setDefaultUserListText() {
   userList.innerHTML = '<option value="default">No users (except owner)</option>';
 }
 
-function setLoggedInUserLabel() {
-  getById('loggedInUserLabel').innerHTML = getUser();
+function updateUserLabels() {
+  getById('loggedInUserLabel').innerHTML = buildKCClient().tokenParsed.email;
+  getById('loggedInUserOrgLabel').innerHTML = buildKCClient().realm;
 }
 
 function setupLogoutButton() {
@@ -461,12 +462,14 @@ function toggleAddUserInput(enabled) {
 }
 
 // Initialize the elements and tabs as needed
-function init() {
-  forceLoginIfNecessary();
+async function init() {
+  // Wait to get the KC token before we update HTML elements with properties from it
+  // Obviously there are cleaner ways to do this
+  await forceLoginIfNecessary();
   togglePolicyElements(false);
   setUpTabs();
   activateUsersTab();
-  setLoggedInUserLabel();
+  updateUserLabels();
   setupLogoutButton();
 }
 

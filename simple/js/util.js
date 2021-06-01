@@ -25,9 +25,9 @@
 const BASE_URL = new RegExp(/^.*\//).exec(window.location.href);
 const getById = (id) => document.getElementById(id);
 const getQueryParam = (id) => new URL(window.location.href).searchParams.get(id);
-const getUser = () => getQueryParam('virtruAuthWidgetEmail');
 
 let client;
+let kcClient;
 
 const isSupportedBrowser = () => {
   const supportedBrowserStrings = ['Chrome', 'Firefox'];
@@ -43,31 +43,46 @@ const isSupportedBrowser = () => {
 
 // Builds a new client (if needed)
 function buildClient() {
+  // client = client || new Virtru.Client({organizationName, oidcRefreshToken});
   client = client || new Virtru.Client({ email: getUser() });
   return client;
 }
 
-// Ensure the user is logged in and has a valid id saved. Otherwise, forward to index
-function loggedIn() {
-  return Virtru.Auth.isLoggedIn({ email: getUser() });
+// Builds a new client (if needed)
+function buildKCClient() {
+  // client = client || new Virtru.Client({organizationName, oidcRefreshToken});
+  kcClient = kcClient || Keycloak(
+    {
+      realm: 'tdf',
+      url: 'http://127.0.0.1:8080/auth/',
+      clientId: 'browsertest',
+    },
+  );
+  return kcClient;
 }
 
 // Log out a currently logged in user and redirect back to the login
-function logout() {
-  Virtru.Auth.logout({ email: getUser() });
-  window.location.href = `${BASE_URL}index.html`;
+async function logout() {
+  const keycloak = buildKCClient();
+  await keycloak.logout({ redirectUri: `${BASE_URL}logout.html` });
 }
 
 // Redirect the user if they don't have a current, valid saved appIdBundle
-function forceLoginIfNecessary() {
-  if (!loggedIn()) {
-    logout();
+async function forceLoginIfNecessary() {
+  const keycloak = buildKCClient();
+  if (!keycloak.authenticated) {
+    console.log('forceLoginIfNecessary KC');
+    try {
+      const authInfo = await keycloak.init({
+        onLoad: 'login-required',
+        promiseType: 'native',
+      });
+      console.log(`GOT KC INFO: ${JSON.stringify(keycloak)}`);
+      console.log(authInfo ? 'User Is Authenticated With Keycloak' : 'User Is Not Authenticated With Keycloak');
+    } catch (error) {
+      console.log('failed to initialize');
+    }
   }
-}
-
-// If the user is already logged in with a valid appIdBundle, just forward them to the demo
-async function skipLoginIfPossible() {
-  if (loggedIn()) window.location.href = `${BASE_URL}dragdrop.html?userId=${loggedInUser}`;
 }
 
 if (!isSupportedBrowser()) {
@@ -79,7 +94,8 @@ window.addEventListener('DOMContentLoaded', () => {
   const timeout = 100;
   let tries = 0;
   function checkOnVirtru() {
-    if (window.Virtru && window.Virtru.OAuth) {
+    console.log(`GOT KC INFO: ${JSON.stringify(buildKCClient())}`);
+    if (window.Virtru) {
       console.log('Initialized Virtru SDK');
       virtruInitalized = true;
     } else if (tries++ < maxTries) {

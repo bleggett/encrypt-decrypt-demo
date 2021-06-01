@@ -26,23 +26,11 @@
 
 <html>
     <head>
-        <script type="text/javascript" src="http://127.0.0.1:8080/auth/js/keycloak.js"></script>
+        <script type="text/javascript" src="js/util.js"></script>
+
         <script>
-         var keycloak = Keycloak(
-             {
-                 realm: "tdf",
-                 url: "http://127.0.0.1:8080/auth/",
-                 clientId: "browsertest"
-             }
-         );
-
-         keycloak.init({onLoad: "login-required"}).success(function(authenticated) {
-             console.log(`GOT KC INFO: ${JSON.stringify(keycloak)}`)
-             alert(authenticated ? 'authenticated' : 'not authenticated');
-         }).error(function() {
-             alert('failed to initialize');
-         });
-
+            const redirectUrl = `${BASE_URL}dragdrop.html`;
+            window.location = `${redirectUrl}`;
         </script>
     </head>
 </html>
